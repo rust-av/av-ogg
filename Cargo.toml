@@ -1,0 +1,26 @@
+[package]
+name = "av-ogg"
+version = "0.1.0"
+authors = ["Gianluca Cannata <gcannata23@gmail.com>"]
+homepage = "https://github.com/aculnaig/av-ogg"
+keywords = ["multimedia", "ogg"]
+license = "MIT"
+edition = "2021"
+
+[features]
+nightly = []
+
+[workspace]
+members = [
+    "ogg",
+    "vorbis",
+]
+
+[workspace.dependencies]
+av-bitstream = { version = "0.2.1" }
+av-codec = { version = "0.3.1" }
+av-data = { version = "0.4.4" }
+av-format = { version = "0.7.1" }
+nom = { version = "8.0.0" }
+av-ogg = { version = "*" }
+av-vorbis = { version = "*" }
