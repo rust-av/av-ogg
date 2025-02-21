@@ -1,7 +1,13 @@
 use core::str;
 use std::str::Utf8Error;
 
-use nom::{bytes::streaming::{tag, take}, combinator::map, number::streaming::{le_u32, le_u8}, sequence::tuple, Parser};
+use nom::{
+    bytes::streaming::{tag, take},
+    combinator::map,
+    number::streaming::{le_u32, le_u8},
+    sequence::tuple,
+    Parser,
+};
 
 pub type VorbisResult<'a, T> = nom::IResult<&'a [u8], T, ()>;
 
@@ -39,7 +45,14 @@ impl VorbisInfo {
         let (remaining, _) = tag(&b"\x01vorbis"[..])(input)?;
         let (remaining, vorbis_info) = map(
             tuple((le_u32, le_u8, le_u32, le_u32, le_u32, le_u32)),
-            |(version, channels, sample_rate, bitrate_maximum, bitrate_nominal, bitrate_minimum)| VorbisInfo {
+            |(
+                version,
+                channels,
+                sample_rate,
+                bitrate_maximum,
+                bitrate_nominal,
+                bitrate_minimum,
+            )| VorbisInfo {
                 version,
                 channels,
                 sample_rate,
@@ -47,7 +60,9 @@ impl VorbisInfo {
                 bitrate_minimum,
                 bitrate_nominal,
                 ..Default::default()
-            }).parse(remaining)?;
+            },
+        )
+        .parse(remaining)?;
 
         Ok((remaining, vorbis_info))
     }
@@ -71,12 +86,11 @@ impl VorbisInfo {
             comment_input = remaining;
         }
 
-        let vendor = str::from_utf8(vendor).map_err(|_: Utf8Error| nom::Err::Error(()))?.to_string();
+        let vendor = str::from_utf8(vendor)
+            .map_err(|_: Utf8Error| nom::Err::Error(()))?
+            .to_string();
 
-        let vorbis_comment = VorbisComment {
-            vendor,
-            comments,
-        };
+        let vorbis_comment = VorbisComment { vendor, comments };
 
         Ok((remaining, vorbis_comment))
     }
