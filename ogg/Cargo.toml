@@ -1,0 +1,12 @@
+[package]
+name = "ogg"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+av-bitstream = { workspace = true }
+av-codec = { workspace = true }
+av-data = { workspace = true }
+av-format = { workspace = true }
+nom = { workspace = true }
+av_vorbis = { version = "*", path = "../vorbis" }
